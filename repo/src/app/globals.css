@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+:root {
+  /* Core palette — obsidian void + solar gold, sparingly warm */
+  --background: #07080b;
+  --foreground: #f4efe4;
+  --accent: #e2a63a;
+  --accent-glow: rgba(226, 166, 58, 0.14);
+  --muted: #8b8779;
+
+  /* Hero additions */
+  --divider: rgba(244, 239, 228, 0.1);
+  --accent-glow-strong: rgba(226, 166, 58, 0.34);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-muted: var(--muted);
+  --color-divider: var(--divider);
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+body {
+  background:
+    radial-gradient(1000px 640px at 84% -170px, var(--accent-glow), transparent 60%),
+    var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+/* Current travelling along the sinewave */
+@keyframes wave-flow {
+  to {
+    stroke-dashoffset: -260;
+  }
+}
+.wave-current {
+  opacity: 0.38;
+  animation: wave-flow 5.5s linear infinite;
+}
+
+/* Slow breathing drift on the corner glow */
+@keyframes glow-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-18px, 14px, 0) scale(1.04);
+  }
+}
+.glow-drift {
+  opacity: 0.6;
+  animation: glow-drift 16s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wave-current,
+  .glow-drift {
+    animation: none;
+  }
+}
+
+*:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
