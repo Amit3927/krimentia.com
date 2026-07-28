@@ -4,7 +4,7 @@ import { useState } from "react";
 
 type Audience = "Public" | "Investor" | "Partner" | "Government" | "Talent";
 
-const CONTACT = "amitojha@krimentia.com";
+const CONTACT = "support@krimentia.com";
 
 const ROUTES: Record<
   Audience,
