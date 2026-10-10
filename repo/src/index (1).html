@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KRīMentia — Grid-forming power electronics and Energy as a Service</title>
+<meta name="description" content="Indigenous grid-forming inverters and grid monitoring for India's distribution networks, from Bhopal.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://krimentia.com/">
+<meta property="og:title" content="KRīMentia — Grid-forming power electronics and Energy as a Service">
+<meta property="og:description" content="Indigenous grid-forming inverters and grid monitoring for India's distribution networks, from Bhopal.">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%23161826'/%3E%3Cpath d='M12 55 C 24 30,34 30,46 55 S 66 80,78 55 S 96 30,100 42' fill='none' stroke='%23968ae0' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Nocturne — design-system tokens and component classes. */
+:root {
+  --color-bg: #161826;
+  --color-surface: #232532;
+  --color-text: #e9e9ed;
+  --color-accent: #968ae0;
+  --color-accent-2: #a7a1db;
+  --color-divider: color-mix(in srgb, #e9e9ed 16%, transparent);
+
+  --color-neutral-100: #f3f5fe;
+  --color-neutral-200: #e4e7f5;
+  --color-neutral-300: #cfd3e5;
+  --color-neutral-400: #b2b6ca;
+  --color-neutral-500: #9397ab;
+  --color-neutral-600: #75798c;
+  --color-neutral-700: #595d6c;
+  --color-neutral-800: #3f424d;
+  --color-neutral-900: #292b31;
+
+  --color-accent-100: #f5f4ff;
+  --color-accent-200: #e7e5fe;
+  --color-accent-300: #d2cefd;
+  --color-accent-400: #b5abfc;
+  --color-accent-500: #968ae0;
+  --color-accent-600: #796cbf;
+  --color-accent-700: #5d5294;
+  --color-accent-800: #423a6a;
+  --color-accent-900: #2b2741;
+
+  --font-heading: "Inter", system-ui, sans-serif;
+  --font-heading-weight: 500;
+  --font-body: "Inter", system-ui, sans-serif;
+
+  --space-1: 2.8px;
+  --space-2: 5.6px;
+  --space-3: 8.4px;
+  --space-4: 11.2px;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+
+  --k-glow-op: 0.5542;
+  --k-glow-size: 1.0332;
+  --k-surge: 0.41;
+
+  --k-gutter: clamp(20px,6vw,88px);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; font-size: 15px; line-height: 1.55; font-weight: 400; background: var(--color-bg); color: var(--color-text); font-family: var(--font-body); }
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  line-height: 1.12; letter-spacing: -0.015em; margin: 0 0 var(--space-2);
+}
+p { margin: 0 0 var(--space-3); }
+a { color: var(--color-accent-300); text-decoration: none; }
+a:hover { color: var(--color-accent); }
+img, svg { max-width: 100%; }
+:focus { outline: none; }
+:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+::selection { background: color-mix(in srgb, var(--color-accent) 30%, transparent); }
+
+/* — buttons — */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  cursor: pointer; text-decoration: none;
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 14px; line-height: 1.2; color: var(--color-text);
+  background: transparent; border: 1px solid transparent;
+  padding: var(--space-2) calc(var(--space-3) * 1.2);
+  border-radius: var(--radius-md);
+}
+.btn-primary { color: var(--color-accent); border-color: var(--color-accent); }
+.btn-primary:hover { background: color-mix(in srgb, var(--color-accent) 12%, transparent); }
+.btn-primary:active { background: color-mix(in srgb, var(--color-accent) 22%, transparent); }
+
+/* — segmented control — */
+.seg-opt input {
+  position: absolute; opacity: 0; width: 0; height: 0; pointer-events: none;
+}
+.seg {
+  display: inline-flex; overflow: hidden;
+  border: 1px solid var(--color-divider); border-radius: var(--radius-md);
+}
+.seg-opt {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 12px; font-size: 13px; cursor: pointer;
+}
+.seg-opt + .seg-opt { border-left: 1px solid var(--color-divider); }
+.seg-opt:has(input:checked) { color: var(--color-accent); box-shadow: inset 0 0 0 1px var(--color-accent); }
+.seg-opt:not(:has(input:checked)):hover { background: color-mix(in srgb, var(--color-text) 7%, transparent); }
+.seg-opt:has(input:focus-visible) { outline: 2px solid var(--color-accent); outline-offset: -2px; }
+
+/* — navigation — */
+.nav a { color: inherit; text-decoration: none; font-size: 14px; }
+.nav a:hover { color: var(--color-accent); }
+
+/* — content sections below the hero — */
+.k-section {
+  position: relative; z-index: 2;
+  padding: clamp(56px,7vw,112px) var(--k-gutter);
+  border-top: 1px solid var(--color-divider);
+}
+.k-inner { max-width: 1560px; margin: 0 auto; }
+.k-eyebrow {
+  display: flex; align-items: center; gap: 16px; margin: 0 0 26px;
+  font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-accent);
+}
+.k-eyebrow::before { content: ""; width: 52px; height: 1px; background: var(--color-accent); flex: none; }
+.k-grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: clamp(16px,2.2vw,32px); }
+.k-card {
+  background: color-mix(in srgb, var(--color-surface) 72%, transparent);
+  border: 1px solid var(--color-divider); border-radius: var(--radius-lg);
+  padding: clamp(24px,3vw,44px);
+}
+.k-card h2, .k-col h2 { font-size: clamp(26px,2.8vw,38px); line-height: 1.12; letter-spacing: -0.02em; margin: 0 0 16px; text-wrap: balance; }
+.k-body { font-size: 17px; line-height: 1.62; color: color-mix(in srgb, var(--color-text) 80%, transparent); max-width: 54ch; margin: 0; text-wrap: pretty; }
+.k-status {
+  display: inline-flex; align-items: center; gap: 10px; margin: 0 0 22px;
+  font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-accent-300);
+}
+.k-dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.k-dot-live { background: var(--color-accent); box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-accent) 60%, transparent); animation: k-pulse 2.4s ease-out infinite; }
+.k-dot-next { border: 1.5px solid var(--color-accent); }
+.k-lead {
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: clamp(22px,2.7vw,36px); line-height: 1.3; letter-spacing: -0.015em;
+  max-width: 34ch; margin: 0; text-wrap: pretty;
+}
+.k-lead em { font-style: normal; color: var(--color-accent-300); }
+.k-source { font-size: 13px; line-height: 1.55; color: var(--color-neutral-500); max-width: 72ch; margin: 30px 0 0; }
+.k-source a { color: var(--color-neutral-400); text-decoration: underline; text-underline-offset: 2px; }
+.k-source a:hover { color: var(--color-accent-300); }
+
+@keyframes k-flow { to { stroke-dashoffset: -260; } }
+@keyframes k-drift { 0%,100% { transform:translate3d(0,0,0) scale(var(--k-glow-size,1)); } 50% { transform:translate3d(-18px,14px,0) scale(calc(var(--k-glow-size,1) * 1.04)); } }
+@keyframes k-pulse { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-accent) 60%, transparent); } 80%,100% { box-shadow: 0 0 0 9px transparent; } }
+@media (max-width: 1180px) {
+  .k-wavegroup { position: static !important; transform: none !important; width: 100% !important; max-width: 620px; margin: 34px auto 6px !important; }
+}
+@media (max-width: 900px) {
+  .k-navlinks { display: none !important; }
+}
+@media (max-width: 860px) {
+  .k-grid-2 { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .k-seg { width: 100%; }
+  .k-cta { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .k-glow, .k-current, .k-dot-live { animation: none !important; }
+}
+</style>
+</head>
+<body>
+<div style="position:relative; min-height:100dvh; overflow:hidden; display:flex; flex-direction:column; font-family:var(--font-body); color:var(--color-text); background:radial-gradient(1000px 640px at 84% -170px, color-mix(in srgb, var(--color-accent) 20%, transparent), transparent 60%), radial-gradient(880px 700px at -6% 116%, color-mix(in srgb, #05060a 62%, transparent), transparent 55%), var(--color-bg)">
+
+  <div class="k-glow" style="position:absolute; top:-200px; right:-150px; width:760px; height:760px; border-radius:50%; background:radial-gradient(circle, color-mix(in srgb, var(--color-accent) 52%, transparent), transparent 68%); opacity:var(--k-glow-op,0.6); filter:blur(12px); pointer-events:none; z-index:0; animation:k-drift 16s ease-in-out infinite"></div>
+
+  <nav style="position:relative; z-index:2; display:flex; align-items:center; flex-wrap:wrap; gap:clamp(16px,2.4vw,30px); padding:24px var(--k-gutter); border-bottom:1px solid var(--color-divider)">
+    <span style="font-family: var(--font-heading); font-weight: 600; font-size: clamp(24px,3.4vw,33px); letter-spacing: -0.01em; margin-right: auto">KR<span style="color:var(--color-accent)">ī</span>Mentia</span>
+    <div class="k-navlinks" style="display:flex; align-items:center; gap:clamp(16px,2.4vw,30px)">
+      <a href="#what-we-do" style="font-size:14px; color:var(--color-neutral-300)">What we do</a>
+      <a href="#why-now" style="font-size:14px; color:var(--color-neutral-300)">Why now</a>
+      <a href="#vision" style="font-size:14px; color:var(--color-neutral-300)">Vision</a>
+      <a href="#team" style="font-size:14px; color:var(--color-neutral-300)">Team</a>
+    </div>
+    <a href="mailto:amitojha@krimentia.com" style="text-decoration:none"><button type="button" class="btn btn-primary" style="min-height:36px">Contact</button></a>
+  </nav>
+
+  <main style="position: relative; z-index: 2; flex: 1; display: flex; flex-direction: column; justify-content: center; padding: clamp(32px,4vw,64px) var(--k-gutter); width: 100%">
+    <div style="max-width:1560px; width:100%; margin:0 auto; position:relative">
+      <div style="max-width:720px; width:100%">
+        <div style="display:flex; align-items:center; gap:16px; margin:0 0 26px">
+          <span style="width:52px; height:1px; background:var(--color-accent)"></span>
+          <span style="font-size:13px; letter-spacing:0.16em; text-transform:uppercase; color:var(--color-accent)">Energy as a Service</span>
+        </div>
+        <h1 style="font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: clamp(38px, 7.2vw, 84px); line-height: 1.02; letter-spacing: -0.025em; margin: 0; color: var(--color-text)">Power that<br>holds its own.</h1>
+        <p style="font-size:18px; line-height:1.62; color:color-mix(in srgb, var(--color-text) 82%, transparent); max-width:52ch; margin:30px 0 0; text-wrap:pretty">KRīMentia is building indigenous grid-forming power electronics that let solar and batteries hold voltage and frequency on their own, and the monitoring that shows utilities where the grid needs them.</p>
+        <!-- Wave + tagline: floated right on wide screens, dropped into the flow
+             between the subheading and the "Connect as" picker on smaller ones. -->
+        <div class="k-wavegroup" style="position:absolute; right:0; top:52%; transform:translateY(-50%); width:min(560px,40vw); pointer-events:none; z-index:1; display:flex; flex-direction:column; align-items:center; gap:10px">
+          <svg class="k-wave" viewBox="0 62 900 336" preserveAspectRatio="xMidYMid meet" aria-hidden="true" style="display:block; width:100%; height:auto; overflow:visible">
+            <defs>
+              <linearGradient id="sw-hero" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="var(--color-accent)" stop-opacity="0"></stop>
+                <stop offset="0.5" stop-color="var(--color-accent)"></stop>
+                <stop offset="1" stop-color="var(--color-accent)" stop-opacity="0"></stop>
+              </linearGradient>
+            </defs>
+            <path d="M-40 240 C 50 90,110 90,200 240 S 340 390,430 240 S 570 90,660 240 S 800 390,890 240" fill="none" stroke="var(--color-accent)" stroke-opacity="0.12" stroke-width="1"></path>
+            <path d="M-40 230 C 50 70,110 70,200 230 S 340 390,430 230 S 570 70,660 230 S 800 390,890 230" fill="none" stroke="url(#sw-hero)" stroke-width="calc(1.75px + 2.5px * var(--k-surge, .35))"></path>
+            <path class="k-current" d="M-40 230 C 50 70,110 70,200 230 S 340 390,430 230 S 570 70,660 230 S 800 390,890 230" fill="none" stroke="var(--color-accent)" stroke-width="1.5" stroke-dasharray="10 16" stroke-linecap="round" style="opacity:calc(0.18 + 0.55 * var(--k-surge, .35)); animation:k-flow 5.5s linear infinite"></path>
+          </svg>
+          <div style="font-family:var(--font-heading); font-size:clamp(14px,1.6vw,18px); letter-spacing:0.01em; color:var(--color-accent-300); text-align:center">Energy + Intelligence = Power</div>
+        </div>
+        <p style="font-size:13px; color:var(--color-neutral-400); margin:42px 0 12px">Connect as:</p>
+        <div style="display:flex; flex-wrap:wrap; gap:18px; align-items:center">
+          <div class="seg k-seg" id="k-purpose" style="flex-wrap:wrap; max-width:100%">
+            <label class="seg-opt"><input type="radio" name="purpose" value="Public" checked>Public</label><label class="seg-opt"><input type="radio" name="purpose" value="Investor">Investor</label>
+            <label class="seg-opt"><input type="radio" name="purpose" value="Partner">Partner</label>
+            <label class="seg-opt"><input type="radio" name="purpose" value="Government">Government</label>
+            <label class="seg-opt"><input type="radio" name="purpose" value="Talent">Talent</label>
+          </div>
+          <button type="button" class="btn btn-primary k-cta" id="k-cta" style="min-height:38px">Connect here</button>
+        </div>
+        <p style="font-size:13px; line-height:1.55; color:color-mix(in srgb, var(--color-text) 62%, transparent); margin:14px 0 0; max-width:46ch; min-height:20px; text-wrap:pretty" id="k-help">We'll write back from the team — questions, ideas, or just curiosity about energy as a service.</p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<section class="k-section" id="what-we-do" aria-label="What we do">
+  <div class="k-inner">
+    <div class="k-grid-2">
+      <article class="k-card">
+        <p class="k-status"><span class="k-dot k-dot-live" aria-hidden="true"></span>Live today</p>
+        <h2>Grid monitoring, in the field.</h2>
+        <p class="k-body">Our pilot system is running on a live distribution transformer, streaming data to our own secure platform. Production hardware is next.</p>
+      </article>
+      <article class="k-card">
+        <p class="k-status"><span class="k-dot k-dot-next" aria-hidden="true"></span>Building next</p>
+        <h2>Grid-forming inverters.</h2>
+        <p class="k-body">As solar and batteries replace generators, grids lose the inertia that kept them stable. Our grid-forming inverters will act as voltage sources, holding voltage and frequency on weak grids and keeping sites powered through outages.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="k-section" id="why-now" aria-labelledby="why-now-label">
+  <div class="k-inner">
+    <p class="k-eyebrow" id="why-now-label">Why now</p>
+    <p class="k-lead">On 13 May 2026, a single disturbance at Khavda cost India <em>8,963&nbsp;MW</em> of generation. CEA’s July 2026 advisory requires grid-forming inverters for battery projects of 50&nbsp;MW and above. India needs this technology built at home.</p>
+    <p class="k-source">Sources: GRID-INDIA presentation to the National Committee on Transmission, as reported by <a href="https://renewablewatch.in/2026/06/30/editorial-june-2026/" target="_blank" rel="noopener">Renewable Watch</a>; Central Electricity Authority advisory of 10 July 2026, clarified 4 August 2026.</p>
+  </div>
+</section>
+
+<section class="k-section" aria-label="Vision and team">
+  <div class="k-inner k-grid-2" style="gap:clamp(40px,6vw,96px)">
+    <div class="k-col" id="vision">
+      <p class="k-eyebrow">Vision</p>
+      <h2>Then, power as a service.</h2>
+      <p class="k-body">We will own and operate solar, storage and grid-forming control, and deliver it to utilities and industries as stable, metered power.</p>
+    </div>
+    <div class="k-col" id="team">
+      <p class="k-eyebrow">Team</p>
+      <h2>Founded by an electrical engineer and a PhD power electronics professor.</h2>
+    </div>
+  </div>
+</section>
+
+<footer style="position:relative; z-index:2; display:flex; align-items:center; justify-content:space-between; gap:12px 20px; flex-wrap:wrap; padding:22px var(--k-gutter); border-top:1px solid var(--color-divider)">
+  <a href="mailto:amitojha@krimentia.com" style="font-size:14px">amitojha@krimentia.com</a>
+  <!-- TODO before DPIIT review: replace "KRīMentia Pvt. Ltd." with the registered name exactly as on the
+       incorporation certificate, then add "· CIN <number>" after it, and "· DPIIT recognition no. <number>" once issued. -->
+  <span style="font-size:12px; letter-spacing:0.04em; color:var(--color-neutral-500)">© 2026 KRīMentia Pvt. Ltd. · Bhopal, Madhya Pradesh</span>
+</footer>
+
+<script>
+(function () {
+  var routes = {
+    Public:     { to: 'amitojha@krimentia.com', cta: 'Connect here',            subject: 'Hello from a curious mind', help: "We'll write back from the team — questions, ideas, or just curiosity about energy as a service." },
+    Investor:   { to: 'amitojha@krimentia.com', cta: 'Request the deck',        subject: 'Investor inquiry',          help: 'Reach the founder directly. We share the vision, the traction, and where the round stands.' },
+    Partner:    { to: 'amitojha@krimentia.com', cta: 'Explore a partnership',   subject: 'Partnership inquiry',       help: 'Utilities, grid operators, OEMs and integrators — tell us where grid monitoring or grid-forming control fits into your network.' },
+    Government: { to: 'amitojha@krimentia.com', cta: 'Open a dialogue',         subject: 'Government & policy',       help: 'Policy, pilots, and public infrastructure. We route you to the right desk.' },
+    Talent:     { to: 'amitojha@krimentia.com', cta: 'Introduce yourself',      subject: 'Joining KRīMentia',         help: 'Power electronics, embedded and software engineers who want to build grid-forming technology in India. Send us your work.' }
+  };
+  var purposeEl = document.getElementById('k-purpose');
+  var ctaEl = document.getElementById('k-cta');
+  var helpEl = document.getElementById('k-help');
+  var current = 'Public';
+
+  function render() {
+    var r = routes[current] || routes.Public;
+    ctaEl.textContent = r.cta;
+    helpEl.textContent = r.help;
+  }
+
+  purposeEl.addEventListener('change', function (e) {
+    if (e.target && e.target.name === 'purpose') {
+      current = e.target.value;
+      render();
+    }
+  });
+
+  ctaEl.addEventListener('click', function () {
+    var r = routes[current] || routes.Public;
+    var body = 'Hi KRīMentia team,\n\nI\'m reaching out as: ' + current + '\n\n';
+    window.location.href = 'mailto:' + r.to + '?subject=' + encodeURIComponent(r.subject) + '&body=' + encodeURIComponent(body);
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
